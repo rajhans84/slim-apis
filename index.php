@@ -37,14 +37,6 @@ $app->get('/sources/:id', function ($id) use ($app) {
 //     query database for all articles
     $sources = R::find('sources', 'whose=?', array($id) );
 
-//    print_r($fields);
-//    foreach($fields as $field){
-//        $phase = R::load('phases', $fields->phase);
-////        print_r($order->phase);die;
-//        $order->phase = $phase;
-//        //print_r($phase);
-//    }
-
     // send response header for JSON content type
     $app->response()->header('Content-Type', 'application/json');
 
@@ -53,17 +45,10 @@ $app->get('/sources/:id', function ($id) use ($app) {
 });
 // handle GET requests for /metadata
 $app->get('/meta/', function () use ($app) {
-//    print_r($limit);
 //     query database for all articles
     $fields = R::findAll('fields' );
 
-//    print_r($fields);
-//    foreach($fields as $field){
-//        $phase = R::load('phases', $fields->phase);
-////        print_r($order->phase);die;
-//        $order->phase = $phase;
-//        //print_r($phase);
-//    }
+
 
     // send response header for JSON content type
     $app->response()->header('Content-Type', 'application/json');
@@ -79,16 +64,12 @@ $app->get('/meta/', function () use ($app) {
 $app->get('/stories/', function () use ($app) {
     $request = $app->request();
     $limit = $request->get('pageSize');
-//    print_r($limit);
 //     query database for all articles
     $orders = R::findAll('orders', "LIMIT 100" );
 
-//    print_r($orders);
     foreach($orders as $order){
         $phase = R::load('phases', $order->phase);
-//        print_r($order->phase);die;
         $order->phase = $phase;
-        //print_r($phase);
     }
 
     // send response header for JSON content type
@@ -107,11 +88,8 @@ $app->get('/stories/:id', function ($id) use ($app) {
         // query database for single article
         $order = R::findOne('orders', 'id=?', array($id));
         $phase = R::load('phases', $order->phase);
-//        print_r($order->phase);die;
         $order->phase = $phase;
-//        echo "<pre>";
         $order = R::exportAll($order);
-//        print_r($order[0]);
 
         if ($order) {
             // if found, return JSON response
@@ -167,7 +145,6 @@ $app->put('/stories/:id', function ($id) use ($app) {
 // handle GET requests for /articles
 $app->get('/users/me', function () use ($app) {
     try {
-//    echo "hello";exit;
         $request = $app->request();
         $username = $request->get('username');
         $password = $request->get('password');
